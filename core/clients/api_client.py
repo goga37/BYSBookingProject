@@ -20,9 +20,6 @@ class APIClient:
 
         self.base_url = self.get_base_url(environment)
         self.session = requests.Session()
-        self.session.headers = {
-            'Content-Type': 'application/json',
-        }
 
     def get_base_url(self, environment: Environment) -> str:
         if environment == Environment.TEST:
@@ -89,11 +86,7 @@ class APIClient:
     def create_booking(self, json_data):
         with allure.step('Creates a new booking'):
             url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT.value}"
-            headers = {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-            response = self.session.post(url, json=json_data, headers=headers)
+            response = self.session.post(url, json=json_data)
             response.raise_for_status()
 
         with allure.step('Assert status code'):
