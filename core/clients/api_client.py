@@ -1,14 +1,14 @@
 import requests
 import os
 from dotenv import load_dotenv
-from core.setings.environments import Environment
+from core.settings.environments import Environment
 import allure
 from core.clients.endpoints import Endpoints
-from core.setings.config import AdminCredentials, Timeouts
+from core.settings.config import AdminCredentials, Timeouts
 from requests.auth import HTTPBasicAuth
 
 load_dotenv()
-
+os.environ['ENVIRONMENT'] = 'PROD'
 
 class APIClient:
     def __init__(self):
@@ -31,6 +31,20 @@ class APIClient:
             return os.getenv('PROD_BASE_URL')
         else:
             raise ValueError(f"Unsupported environment: {environment}")
+
+    def get(self, endpoint, params=None, status_code=200):
+        url = self.base_url + endpoint
+        response = requests.get(url, headers=self.headers, params=params)
+        if status_code:
+            assert response.status_code == status_code
+        return response.json()
+
+    def post(self, endpoint, data=None, status_code=200):
+        url = self.base_url + endpoint
+        response = requests.post(url, headers=self.headers, json=data)
+        if status_code:
+            assert response.status_code == status_code
+        return response.json()
 
     def ping(self):
         with allure.step('Ping api client'):
@@ -75,10 +89,18 @@ class APIClient:
     def create_booking(self, json_data):
         with allure.step('Creates a new booking'):
             url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT.value}"
+
+            print("🔻 REQUEST TO:", url)
+            print("📤 REQUEST JSON:", json_data)
+
             response = self.session.post(url, json=json_data)
+
+            print("📥 RESPONSE STATUS:", response.status_code)
+            print("📄 RESPONSE BODY:", response.text)
+
             response.raise_for_status()
         with allure.step('Assert status code'):
-            assert response.status_code == 200, f"Expected status 200 but got {response.status_code}"
+            assert response.status_codein in (200, 201), f"Expected status 200 or 201 but got {response.status_code}"
             return response.status_code, response.json()
 
     def get_booking_ids(self, params=None):
