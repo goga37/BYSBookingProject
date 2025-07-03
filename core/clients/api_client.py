@@ -89,19 +89,16 @@ class APIClient:
     def create_booking(self, json_data):
         with allure.step('Creates a new booking'):
             url = f"{self.base_url}{Endpoints.BOOKING_ENDPOINT.value}"
-
-            print("🔻 REQUEST TO:", url)
-            print("📤 REQUEST JSON:", json_data)
-
-            response = self.session.post(url, json=json_data)
-
-            print("📥 RESPONSE STATUS:", response.status_code)
-            print("📄 RESPONSE BODY:", response.text)
-
+            headers = {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+            response = self.session.post(url, json=json_data, headers=headers)
             response.raise_for_status()
+
         with allure.step('Assert status code'):
-            assert response.status_codein in (200, 201), f"Expected status 200 or 201 but got {response.status_code}"
-            return response.status_code, response.json()
+            assert response.status_code in (200, 201), f"Expected status 200 or 201 but got {response.status_code}"
+        return response.json()
 
     def get_booking_ids(self, params=None):
         with allure.step('Getting object with bookings'):
