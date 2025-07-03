@@ -1,7 +1,5 @@
 import allure
 import pytest
-import requests
-
 
 @allure.feature("Test Ping")
 @allure.story("Test connection")
