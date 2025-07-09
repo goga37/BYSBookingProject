@@ -1,4 +1,4 @@
-callure-pytest==2.14.3
+allure-pytest==2.14.3
 allure-python-commons==2.14.3
 annotated-types==0.7.0
 attrs==25.3.0
