@@ -1,16 +1,14 @@
 import requests
-import os
 from dotenv import load_dotenv
+import os
 from core.settings.environments import Environment
 import allure
 from core.clients.endpoints import Endpoints
 from core.settings.config import AdminCredentials, Timeouts
 from requests.auth import HTTPBasicAuth
 
-load_dotenv()
-os.environ['ENVIRONMENT'] = 'PROD'
-
 class APIClient:
+    load_dotenv()
     def __init__(self):
         environment_str = os.getenv('ENVIRONMENT')
         try:
