@@ -7,8 +7,8 @@ from core.clients.endpoints import Endpoints
 from core.settings.config import AdminCredentials, Timeouts
 from requests.auth import HTTPBasicAuth
 
+load_dotenv()
 class APIClient:
-    load_dotenv()
     def __init__(self):
         environment_str = os.getenv('ENVIRONMENT')
         try:
