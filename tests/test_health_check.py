@@ -31,7 +31,7 @@ def test_ping_returns_404_not_found(api_client, mocker):
     mock_response = mocker.Mock()
     mock_response.status_code = 404
     mocker.patch.object(api_client.session, 'get', return_value=mock_response)
-    with pytest.raises(AssertionError, match="Expected status 201 but got 405"):
+    with pytest.raises(AssertionError, match="Expected status 201 but got 404"):
         api_client.ping()
 
 @allure.feature("Test wrong HTTP method")
@@ -40,7 +40,7 @@ def test_ping_returns_200_instead_of_201(api_client, mocker):
     mock_response = mocker.Mock()
     mock_response.status_code = 200
     mocker.patch.object(api_client.session, 'get', return_value=mock_response)
-    with pytest.raises(AssertionError, match="Expected status 201 but got 405"):
+    with pytest.raises(AssertionError, match="Expected status 201 but got 200"):
         api_client.ping()
 
 @allure.feature("Test wrong HTTP method")

@@ -4,7 +4,6 @@ import requests
 from pydantic import ValidationError
 from core.models.booking import BookingResponse
 
-
 @allure.feature("Создание бронирования")
 @allure.story("Успешное создание бронирования")
 def test_create_bocking(api_client, generate_random_booking_data):
@@ -36,7 +35,7 @@ def test_create_booking_without_additionalneeds(api_client, generate_random_book
             "depositpaid": True,
             "bookingdates": {
                 "checkin": "2013-02-23",
-                "checkout": "2014-16-23"
+                "checkout": "2014-11-23"
             }
         }
         response = api_client.create_booking(json_data)
